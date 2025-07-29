@@ -1,0 +1,16 @@
+.formContainer {
+    max-width: 350px;
+    padding: 1rem;
+    margin: auto;
+  }
+  
+  .textCenter {
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  
+  .heading {
+    text-align: center;
+    margin-bottom: 1rem;
+    font-weight: bold;
+  }
