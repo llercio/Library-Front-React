@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from './LoginForm.module.css';
 import { login } from '../../services/auth.service';
 
@@ -7,6 +8,7 @@ function LoginForm() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   const handleLogin = async () => {
     setError(null);
@@ -15,17 +17,20 @@ function LoginForm() {
     try {
       const data = await login(email, password);
       
-      if (data.token) {
+      if (data.token && data.role) {
         localStorage.setItem('token', data.token);
+        localStorage.setItem('userRole', data.role);
 
         if (data.role === 'STUDENT') {
-          window.location.href = '/pages/student/home';
+          navigate('/pages/student/home/');
         } else if (data.role === 'EMPLOYEE') {
-          window.location.href = '/pages/employee/borrow';
+          navigate('/pages/employee/borrow/');
         } else {
           setError('Função de usuário desconhecida.');
           localStorage.removeItem('token');
         }
+      } else {
+        setError('Resposta de login incompleta. Verifique com a API.');
       }
     } catch (err) {
       setError(err.message);
